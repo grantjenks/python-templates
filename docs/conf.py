@@ -15,19 +15,19 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
-import themes
+import templates
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'Themes'
-copyright = themes.__copyright__
-author = themes.__author__
+project = 'Templates'
+copyright = templates.__copyright__
+author = templates.__author__
 
 # The short X.Y version
-version = themes.__version__
+version = templates.__version__
 # The full version, including alpha/beta/rc tags
-release = themes.__version__
+release = templates.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -91,7 +91,7 @@ html_theme_options = {
     'show_powered_by': False,
     'show_related': True,
     'github_user': 'grantjenks',
-    'github_repo': 'python-themes',
+    'github_repo': 'python-templates',
     'github_type': 'star',
 }
 
@@ -121,7 +121,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'ThemesDoc'
+htmlhelp_basename = 'TemplatesDoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -148,7 +148,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Themes.tex', 'Themes Documentation',
+    (master_doc, 'Templates.tex', 'Templates Documentation',
      'Grant Jenks', 'manual'),
 ]
 
@@ -158,7 +158,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'themes', 'Themes Documentation',
+    (master_doc, 'templates', 'Templates Documentation',
      [author], 1)
 ]
 
@@ -169,8 +169,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Themes', 'Themes Documentation',
-     author, 'Themes', 'Python templating library with themes included.',
+    (master_doc, 'Templates', 'Templates Documentation',
+     author, 'Templates', 'Python templating library with templates included.',
      'Miscellaneous'),
 ]
 

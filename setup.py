@@ -1,7 +1,7 @@
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
-import themes
+import templates
 
 
 class Tox(TestCommand):
@@ -20,14 +20,14 @@ with open('README.rst') as reader:
 
 
 setup(
-    name='themes',
-    version=themes.__version__,
-    description='Python templating library with themes included.',
+    name=templates.__title__,
+    version=templates.__version__,
+    description='Python templating library with templates included.',
     long_description=readme,
     author='Grant Jenks',
     author_email='contact@grantjenks.com',
-    url='http://www.grantjenks.com/docs/themes/',
-    packages=['themes'],
+    url='http://www.grantjenks.com/docs/templates/',
+    packages=['templates'],
     include_package_data=True,
     tests_require=['tox'],
     cmdclass={'test': Tox},
