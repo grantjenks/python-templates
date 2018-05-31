@@ -1,7 +1,24 @@
 import os.path as op
-from .. import Template
+from .base import Bootstrap
 
-class Starter(Template):
+class Starter(Bootstrap):
+
+    def head(self):
+        self.put('''
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+        ''')
+        self.link_favicon()
+        self.title_element()
+        self.css_bootstrap()
+        self.css_extra()
+
+        pass
+
+    def body(self):
+        pass
 
     def build(self):
         self.put('''
@@ -14,7 +31,7 @@ class Starter(Template):
     <meta name="author" content="">
         ''')
         self.link_favicon()
-        self.title()
+        self.title_element()
         self.css_bootstrap()
         self.css_extra()
         self.put('''
@@ -75,11 +92,11 @@ class Starter(Template):
     def link_favicon(self):
         self.put('<link rel="icon" href="/favicon.ico">')
 
-    def title(self):
+    def title_element(self):
         with self.tag('title'):
-            self.title_content()
+            self.title()
 
-    def title_content(self):
+    def title(self):
         self.put('Starter Template for Bootstrap')
 
     def css_bootstrap(self):
@@ -139,7 +156,7 @@ body {
         self.put('''
 Use this document as a way to quickly start any new project.<br> All you get
 is this text and a mostly barebones HTML document.
-        ''')
+p        ''')
 
     def content(self):
         pass
