@@ -28,11 +28,10 @@ setup(
     author_email='contact@grantjenks.com',
     url='http://www.grantjenks.com/docs/themes/',
     packages=['themes'],
-    package_data={'': ['LICENSE', 'README.rst']},
+    include_package_data=True,
     tests_require=['tox'],
     cmdclass={'test': Tox},
     license='Apache 2.0',
-    install_requires=[],
     classifiers=(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
