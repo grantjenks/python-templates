@@ -35,8 +35,8 @@ function. The `help` works on modules, classes and methods in `Python Themes`_.
 
     >>> import themes
     >>> help(themes)
-    >>> from themes import Bootstrap
-    >>> help(Bootstrap)
+    >>> from themes import bootstrap
+    >>> help(bootstrap)
 
 Useful Links
 ------------
