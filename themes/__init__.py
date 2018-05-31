@@ -19,8 +19,8 @@ class Template(metaclass=ABCMeta):
     def build(self):
         pass
 
-    def tag(self, name, attrs={}):
-        return Tag(self, name, attrs)
+    def tag(self, name, attrs=None):
+        return Tag(self, name, attrs or {})
 
     def __iter__(self):
         yield from self._parts
