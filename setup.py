@@ -27,7 +27,7 @@ setup(
     author='Grant Jenks',
     author_email='contact@grantjenks.com',
     url='http://www.grantjenks.com/docs/templates/',
-    packages=['templates'],
+    packages=[templates.__name__],
     include_package_data=True,
     tests_require=['tox'],
     cmdclass={'test': Tox},
