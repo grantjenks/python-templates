@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-from reprlib import recursive_repr
 
 
 class Template(metaclass=ABCMeta):
@@ -39,6 +38,7 @@ class Template(metaclass=ABCMeta):
 class ChainDict(dict):
 
     def __init__(self, *maps):
+        # pylint: disable=super-init-not-called
         self._maps = maps
 
     def __missing__(self, key):

@@ -2,6 +2,8 @@ import os.path
 
 from ..html import HTMLTemplate
 
+__dir__ = os.path.dirname(os.path.realpath(__file__))
+
 
 class Bootstrap(HTMLTemplate):
 
@@ -67,12 +69,9 @@ class Bootstrap(HTMLTemplate):
             self._include('bootstrap.min.css')
 
     def _include(self, filename):
-        with open(os.path.join(self._directory(), filename)) as reader:
+        with open(os.path.join(__dir__, filename)) as reader:
             text = reader.read()
         self.put(text)
-
-    def _directory(self):
-        return os.path.dirname(os.path.realpath(__file__))
 
     def head_extra(self):
         pass
@@ -99,6 +98,7 @@ class Bootstrap(HTMLTemplate):
             self.h1()
 
     def h1(self):
+        # pylint: disable=invalid-name
         self.put('Bootstrap Template')
 
     def jquery_js_element(self):
