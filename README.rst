@@ -8,6 +8,54 @@ in pure-Python, including popular HTML templates like `Bootstrap`_.
 .. _`html templating`: http://www.grantjenks.com/docs/templates/
 .. _`Bootstrap`: https://getbootstrap.com/
 
+TODO
+----
+
+`Python Templates`_ is a work-in-progress.
+
+* Improve semantic components?
+
+  * What should be a function vs class? Currently, it's mostly just inheritance
+    with methods. That feels basic to me. At the other extreme is an
+    element-tree api with visitor pattern. I think the significance of this
+    project is finding the balance between those too.
+
+  * This project seems to go against "flat is better than nested". But I like
+    the idea of using regular Python for template features like: if-statements,
+    for-loops, and inheritance.
+
+* Add more front-end frameworks.
+
+  * Reference: https://github.com/troxler/awesome-css-frameworks
+
+  * Normalize.css
+
+  * Pure.css
+
+  * Milligram.css
+
+  * Bootstrap, add more examples.
+
+  * Semantic UI
+
+  * Foundation
+
+  * Bulma
+
+  * UIkit
+
+  * Materialize
+
+* Demo project ideas:
+
+  * Link shortener
+
+  * E-commerce page
+
+  * Blog
+
+* Include images, fonts, icons?
+
 Testimonials
 ------------
 
@@ -37,6 +85,15 @@ function. The `help` works on modules, classes and methods in `Python Templates`
     >>> help(templates)
     >>> from templates import bootstrap
     >>> help(bootstrap)
+    >>> help(bootstrap.Starter)
+    >>> help(bootstrap.Jumbotron)
+
+There's also a demo which you can run using `bottle`_::
+
+    $ pip install bottle
+    $ python -m templates.demo
+
+.. _`bottle`: https://bottlepy.org/
 
 Useful Links
 ------------

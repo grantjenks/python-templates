@@ -5,8 +5,8 @@
 
 """
 
-from .base import Template
-from .html import HTMLTemplate, Tag
+from .base import Template, HTMLTemplate, Tag
+from . import bootstrap
 
 __title__ = 'templates'
 __version__ = '0.0.3'

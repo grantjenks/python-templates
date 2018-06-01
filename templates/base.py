@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from textwrap import dedent
 
 
 class Template(metaclass=ABCMeta):
@@ -35,16 +36,65 @@ class Template(metaclass=ABCMeta):
         pass
 
 
-class ChainDict(dict):
+class HTMLTemplate(Template):
+    HTML_LANG = 'en'
 
-    def __init__(self, *maps):
-        # pylint: disable=super-init-not-called
-        self._maps = maps
+    def put(self, value):
+        value = value.strip()
+        value = dedent(value)
+        self._parts.append(value)
 
-    def __missing__(self, key):
-        for mapping in self._maps:
-            try:
-                return mapping[key]
-            except KeyError:
-                pass
-        raise KeyError(key)
+    def run(self):
+        self.doctype()
+        self.html_element()
+
+    def doctype(self):
+        self.put('<!doctype html>')
+
+    def html_element(self):
+        with self.tag('html', {'lang': self.HTML_LANG}):
+            self.head_element()
+            self.body_element()
+
+    def tag(self, name, attrs=None, void=False):
+        return Tag(self, name, attrs or {}, void)
+
+    def head_element(self):
+        with self.tag('head'):
+            self.head()
+
+    def head(self):
+        pass
+
+    def body_element(self):
+        with self.tag('body'):
+            self.body()
+
+    def body(self):
+        pass
+
+
+class Tag:
+    def __init__(self, template, name, attrs, void):
+        self.template = template
+        self.name = name
+        self.attrs = attrs
+        self.void = void
+        if void:
+            self.template.put(f'<{self.name}{self._extras()}>')
+
+    def _extras(self):
+        extras = ''
+        attrs = self.attrs
+        if attrs:
+            items = attrs.items()
+            pairs = ' '.join(f'{key}="{value}"' for key, value in items)
+            extras = ' ' + pairs
+        return extras
+
+    def __enter__(self):
+        assert not self.void
+        self.template.put(f'<{self.name}{self._extras()}>')
+
+    def __exit__(self, exc_type, exc_inst, exc_tb):
+        self.template.put(f'</{self.name}>')
