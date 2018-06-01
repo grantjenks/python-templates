@@ -1,10 +1,10 @@
 import templates
 
-from .demos import BootstrapStarterDemo
+from .demos import StarterDemo
 
 def test_build():
     assert templates.__build__ > 0
 
 def test_starter():
-    page = BootstrapStarterDemo()
-    page.build()
+    page = StarterDemo()
+    assert 'Demo' in page.format()

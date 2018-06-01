@@ -1,13 +1,9 @@
-from templates import bootstrap
+from templates.bootstrap import Starter
 
-class BootstrapStarterDemo(bootstrap.Starter):
+
+class StarterDemo(Starter):
 
     def title(self):
-        self.put('Starter Template / Bootstrap / Templates')
+        self.put('Demo / Starter / Bootstrap / Templates')
 
-    def heading_content(self):
-        self.title_content()
-
-    def content(self):
-        with self.tag('p'):
-            self.put('Demo of the Bootstrap Starter Template.')
+    h1 = title

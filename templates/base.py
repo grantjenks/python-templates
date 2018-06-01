@@ -1,41 +1,50 @@
 from abc import ABCMeta, abstractmethod
+from reprlib import recursive_repr
+
 
 class Template(metaclass=ABCMeta):
 
     def __init__(self):
         self._parts = []
 
-    def put(self, part):
-        self._parts.append(part)
+    def put(self, value):
+        self._parts.append(value)
+
+    def format(self, **kwargs):
+        delete = object()
+        originals = {}
+        for key in kwargs:
+            if hasattr(self, key):
+                originals[key] = getattr(self, key)
+            else:
+                originals[key] = delete
+        try:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+            self._parts.clear()
+            self.run()
+            return ''.join(self._parts)
+        finally:
+            for key, value in originals.items():
+                if value is delete:
+                    delattr(self, key)
+                else:
+                    setattr(self, key, value)
 
     @abstractmethod
-    def build(self):
+    def run(self):
         pass
 
-    def tag(self, name, attrs=None):
-        return Tag(self, name, attrs or {})
 
-    def __iter__(self):
-        yield from self._parts
+class ChainDict(dict):
 
-    def __str__(self):
-        return ''.join(self._parts)
+    def __init__(self, *maps):
+        self._maps = maps
 
-
-class Tag:
-    def __init__(self, template, name, attrs):
-        self.template = template
-        self.name = name
-        self.attrs = attrs
-
-    def __enter__(self):
-        extra = ''
-        attrs = self.attrs
-        if attrs:
-            items = attrs.items()
-            pairs = ' '.join(f'{key}="{value}"' for key, value in items)
-            extra = ' ' + pairs
-        self.template.put(f'<{self.name}{extra}>')
-
-    def __exit__(self, exc_type, exc_inst, exc_tb):
-        self.template.put(f'</{self.name}>')
+    def __missing__(self, key):
+        for mapping in self._maps:
+            try:
+                return mapping[key]
+            except KeyError:
+                pass
+        raise KeyError(key)
