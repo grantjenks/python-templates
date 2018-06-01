@@ -4,39 +4,17 @@ from .base import Bootstrap
 class Starter(Bootstrap):
 
     def head(self):
-        self.put('''
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-        ''')
-        self.link_favicon()
+        self.charset_element()
+        self.viewport_element()
+        self.description_element()
+        self.author_element()
+        self.favicon_element()
         self.title_element()
         self.css_bootstrap()
         self.css_extra()
-
-        pass
 
     def body(self):
-        pass
-
-    def build(self):
         self.put('''
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-        ''')
-        self.link_favicon()
-        self.title_element()
-        self.css_bootstrap()
-        self.css_extra()
-        self.put('''
-  </head>
-  <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,20 +62,7 @@ class Starter(Bootstrap):
         self.script_jquery()
         self.script_popper()
         self.script_bootstrap()
-        self.put('''
-  </body>
-</html>
-        ''')
 
-    def link_favicon(self):
-        self.put('<link rel="icon" href="/favicon.ico">')
-
-    def title_element(self):
-        with self.tag('title'):
-            self.title()
-
-    def title(self):
-        self.put('Starter Template for Bootstrap')
 
     def css_bootstrap(self):
         filename = 'bootstrap.min.css'
@@ -111,16 +76,21 @@ class Starter(Bootstrap):
         with self.tag('style'):
             self.put('''
 body {
-  padding-top: 5rem;
+    padding-top: 5rem;
 }
 .starter-template {
-  padding: 3rem 1.5rem;
-  text-align: center;
+    padding: 3rem 1.5rem;
+    text-align: center;
 }
             ''')
 
+    def _path(self, filename):
+        return op.join(op.dirname(op.realpath(__file__)), filename)
+
     def script_jquery(self):
-        filename = 'jquery-3.2.1.slim.min.js'
+        with self.tag('script'):
+            self._include(self._path('jquery-3.2.1.slim.min.js'))
+
         path = op.join(op.dirname(op.realpath(__file__)), filename)
         with self.tag('script'):
             with open(path) as reader:
