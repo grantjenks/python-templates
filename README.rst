@@ -56,6 +56,10 @@ TODO
 
 * Include images, fonts, icons?
 
+* See also:
+
+  * Dominate: https://github.com/Knio/dominate
+
 Testimonials
 ------------
 
