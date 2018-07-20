@@ -25,13 +25,16 @@ from templates.bootstrap import Starter, Jumbotron
 
 class Index(HTMLTemplate):
     def body(self):
-        self.put('''
-<h1>Python Templates</h1>
-<ul>
-    <li><a href="/starter/">Bootstrap Starter</a></li>
-    <li><a href="/jumbotron/">Bootstrap Jumbotron</a></li>
-</ul>
-        ''')
+        with self.tag('h1'):
+            self.add('Python Templates')
+        with self.tag('ul'):
+            with self.tag('li'):
+                with self.tag('a', attrs={'href': '/starter/'}):
+                    self.add('Bootstrap Starter')
+            with self.tag('li'):
+                with self.tag('a', attrs={'href': '/jumbotron/'}):
+                    self.add('Bootstrap Jumbotron')
+
 
 @get('/')
 def index():
@@ -55,6 +58,7 @@ def launch(host, port):
     time.sleep(1)
     webbrowser.open(f'http://{host}:{port}/')
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--no-launch', dest='launch', action='store_false')
@@ -69,6 +73,7 @@ def main():
         thread.start()
 
     run(host=args.host, port=args.port, reloader=args.reload, debug=args.debug)
+
 
 if __name__ == '__main__':
     main()
