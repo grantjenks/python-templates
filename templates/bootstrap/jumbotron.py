@@ -3,11 +3,11 @@ from . import Bootstrap
 class Jumbotron(Bootstrap):
 
     def title(self):
-        self.put('Jumbotron Template for Bootstrap')
+        self.add('Jumbotron Template for Bootstrap')
 
     def head_extra(self):
         with self.tag('style'):
-            self.put('''
+            self.add('''
 /* Move down content because we have a fixed navbar that is 3.5rem tall */
 body {
     padding-top: 3.5rem;
@@ -15,7 +15,7 @@ body {
             ''')
 
     def main(self):
-        self.put('''
+        self.add('''
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
   <div class="container">
@@ -53,4 +53,4 @@ body {
 
     def footer(self):
         with self.tag('p'):
-            self.put('&copy; Company 2017-2018')
+            self.add('&copy; Company 2017-2018')

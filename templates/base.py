@@ -7,7 +7,7 @@ class Template(metaclass=ABCMeta):
     def __init__(self):
         self._parts = []
 
-    def put(self, value):
+    def add(self, value):
         self._parts.append(value)
 
     def format(self, **kwargs):
@@ -39,7 +39,7 @@ class Template(metaclass=ABCMeta):
 class HTMLTemplate(Template):
     HTML_LANG = 'en'
 
-    def put(self, value):
+    def add(self, value):
         value = value.strip()
         value = dedent(value)
         self._parts.append(value)
@@ -49,7 +49,7 @@ class HTMLTemplate(Template):
         self.html_element()
 
     def doctype(self):
-        self.put('<!doctype html>')
+        self.add('<!doctype html>')
 
     def html_element(self):
         with self.tag('html', {'lang': self.HTML_LANG}):
@@ -81,7 +81,7 @@ class Tag:
         self.attrs = attrs
         self.void = void
         if void:
-            self.template.put(f'<{self.name}{self._extras()}>')
+            self.template.add(f'<{self.name}{self._extras()}>')
 
     def _extras(self):
         extras = ''
@@ -94,7 +94,7 @@ class Tag:
 
     def __enter__(self):
         assert not self.void
-        self.template.put(f'<{self.name}{self._extras()}>')
+        self.template.add(f'<{self.name}{self._extras()}>')
 
     def __exit__(self, exc_type, exc_inst, exc_tb):
-        self.template.put(f'</{self.name}>')
+        self.template.add(f'</{self.name}>')
