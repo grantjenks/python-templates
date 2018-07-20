@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
 
 import templates
@@ -27,7 +27,7 @@ setup(
     author='Grant Jenks',
     author_email='contact@grantjenks.com',
     url='http://www.grantjenks.com/docs/templates/',
-    packages=[templates.__name__],
+    packages=find_packages(exclude=['tests']),
     include_package_data=True,
     tests_require=['tox'],
     cmdclass={'test': Tox},
