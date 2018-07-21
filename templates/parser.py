@@ -5,9 +5,7 @@ Templates.
 
 TODO
 
-- support doctype
-- support comments
-- join attrs values that are a list of strings
+- Change tag calls to pass void=True
 
 Open Questions
 
@@ -17,11 +15,15 @@ Open Questions
 2. How to identify common patterns between templates and refactor those common
    patterns into parent classes?
 
+3. How to identify common patterns within a template and refactor to template
+   class methods (possibly with different parameters)?
+
 """
 
 import argparse
 import bs4
 import requests
+from urllib.parse import urljoin
 
 
 class HTMLTemplateGenerator:
@@ -29,41 +31,68 @@ class HTMLTemplateGenerator:
     def __init__(self, url, name):
         self.url = url
         self.name = name
-        self.indent = 8
+        self.indent = 0
+
+    def put(self, value):
+        print(f"{' ' * self.indent}{value}")
 
     def run(self):
+        self.put(f'class {self.name}(HTMLTemplate):')
+        self.indent += 4
+        self.put('def run(self):')
+        self.indent += 4
         resp = requests.get(self.url)
         soup = bs4.BeautifulSoup(resp.content, 'lxml')
-        print(f'class {self.name}(HTMLTemplate):')
-        print('    def run(self):')
+
         for element in soup.contents:
             self.visit(element)
 
     def visit(self, element):
-        if isinstance(element, bs4.Doctype):
-            print(f"{' ' * self.indent}self.add('?doctype?')")
-        elif isinstance(element, bs4.Tag):
-            space = ' ' * self.indent
-            children = list(getattr(element, 'contents', []))
-            name = getattr(element, 'name', '')
-            attrs = getattr(element, 'attrs', {})
+        visit_name = 'visit_' + type(element).__name__.lower()
+        visit_method = getattr(self, visit_name)
+        visit_method(element)
 
-            if not children:
-                print(f'{space}self.tag({name!r}, attrs={attrs!r})')
-                return
+    def visit_navigablestring(self, element):
+        text = str(element)
+        text = text.strip()
 
-            print(f'{space}with self.tag({name!r}, attrs={attrs!r}):')
-            self.indent += 4
-            for subelement in children:
-                self.visit(subelement)
-            self.indent -= 4
-        elif isinstance(element, bs4.NavigableString):
-            text = str(element)
-            text = text.strip()
-            if text:
-                print(f"{' ' * self.indent}self.add('{element}')")
+        if text:
+            self.put(f'self.add({text!r})')
+
+    def visit_comment(self, element):
+        text = str(element)
+        comment = f'<!--{text}-->'
+        self.put(f'self.add({comment!r})')
+
+    def visit_tag(self, element):
+        attrs = getattr(element, 'attrs', {})
+
+        for key, value in attrs.items():
+            if isinstance(value, list) and len(value) == 1:
+                value = value[0]
+
+            if key == 'href':
+                value = urljoin(self.url, value)
+            elif key == 'src':
+                value = urljoin(self.url, value)
+
+            attrs[key] = value
+
+        attrs_arg = f', attrs={attrs!r}' if attrs else ''
+
+        if not element.contents:
+            self.put(f'self.tag({element.name!r}{attrs_arg})')
         else:
-            print('type:', type(element))
+            self.put(f'with self.tag({element.name!r}{attrs_arg}):')
+            self.indent += 4
+
+            for subelement in element.contents:
+                self.visit(subelement)
+
+            self.indent -= 4
+
+    def visit_doctype(self, element):
+        print(f"{' ' * self.indent}self.add('<!doctype {element}>')")
 
 
 def main():
