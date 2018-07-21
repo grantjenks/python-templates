@@ -80,17 +80,22 @@ class Tag:
         self.name = name
         self.attrs = attrs
         self.void = void
+
         if void:
             self.template.add(f'<{self.name}{self._extras()}>')
 
     def _extras(self):
-        extras = ''
-        attrs = self.attrs
-        if attrs:
-            items = attrs.items()
-            pairs = ' '.join(f'{key}="{value}"' for key, value in items)
-            extras = ' ' + pairs
-        return extras
+        if not self.attrs:
+            return ''
+
+        attrs = dict(self.attrs)
+
+        for key, value in attrs.items():
+            if isinstance(value, list):
+                attrs[key] = ' '.join(value)
+
+        pairs = ' '.join(f'{key}="{value}"' for key, value in attrs.items())
+        return ' ' + pairs
 
     def __enter__(self):
         assert not self.void
